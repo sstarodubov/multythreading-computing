@@ -1,37 +1,68 @@
 package com.haxul.computing;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Runner runner = new Runner();
-        Thread thread1 = new Thread(runner);
-        thread1.start();
-        System.out.println("main thread is here");
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-        runner.shutdown();
+
+    public static void main(String[] args) throws InterruptedException {
+        new Worker().main();
     }
 }
 
 
-class Runner implements Runnable {
+class Worker {
+    private List<Integer> list1 = new ArrayList<>();
+    private List<Integer> list2 = new ArrayList<>();
 
-    private volatile boolean running = true;
+    private Random random = new Random();
 
-    @Override
-    public void run() {
-        while (running) {
-            System.out.println("Hello");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    private Object lock1 = new Object();
+    private Object lock2 = new Object();
+
+    private  void addToList1() {
+        synchronized (lock1) {
+            list1.add(random.nextInt(100));
         }
     }
 
-    public void shutdown() {
-        running = false;
+    private  void addToList2() {
+        synchronized (lock2) {
+            list2.add(random.nextInt(100));
+        }
+    }
+
+    public void work() {
+        for (int i = 0; i < 1000000 ; i++) {
+            addToList1();
+            addToList2();
+        }
+    }
+
+    public void main() throws InterruptedException {
+        long before = System.currentTimeMillis();
+
+        Thread thread1 = new Thread(() -> work());
+        Thread thread2 = new Thread(() -> work());
+        Thread thread3 = new Thread(()-> work());
+        Thread thread4 = new Thread(()-> work());
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+
+        thread3.join();
+        thread1.join();
+        thread4.join();
+        thread2.join();
+
+        long after = System.currentTimeMillis();
+
+        System.out.println("spent time is " + (after - before));
+        System.out.println(list1.size());
+        System.out.println(list2.size());
     }
 }
