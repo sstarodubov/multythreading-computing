@@ -1,4 +1,4 @@
-package com.haxul.computing;
+package com.haxul.computing.AlishevCourse;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

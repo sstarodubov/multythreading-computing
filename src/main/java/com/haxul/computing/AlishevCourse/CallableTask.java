@@ -1,4 +1,4 @@
-package com.haxul.computing;
+package com.haxul.computing.AlishevCourse;
 
 import java.util.Random;
 import java.util.concurrent.*;

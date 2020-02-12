@@ -1,4 +1,4 @@
-package com.haxul.computing;
+package com.haxul.computing.AlishevCourse;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

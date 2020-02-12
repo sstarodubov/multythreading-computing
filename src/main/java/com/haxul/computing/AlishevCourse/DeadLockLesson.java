@@ -1,4 +1,4 @@
-package com.haxul.computing;
+package com.haxul.computing.AlishevCourse;
 
 public class DeadLockLesson {
     public static void main(String[] args) throws InterruptedException {
